@@ -4,7 +4,21 @@
     let searchedForText;
     const responseContainer = document.querySelector('#response-container');
 
-    function addImage() {}
+    function addImage() {
+        const data = JSON.parse(this.responseText);
+        let htmlContent;
+        if (data && data.results && data.results[0]) {
+            const firstImage = data.results[0];
+            htmlContent = `<figure>
+                <img src="${firstImage.urls.regular}" alt="${searchedForText}">
+                <figcaption>${searchedForText} by ${firstImage.user.name}</figcaption>
+                </figure>`;
+        } else {
+            htmlContent = `<div class="error-no-image">Sorry, no images found</div>`;
+        }
+
+        responseContainer.innerHTML = htmlContent;
+    }
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
