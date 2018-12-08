@@ -20,6 +20,17 @@
         responseContainer.innerHTML = htmlContent;
     }
 
+    function imageError() {
+        console.log('Image request error. Check network connection.');
+    }
+
+
+    function addArticles() {}
+
+    function articleError() {
+        console.log('Article search error');
+    }
+
     form.addEventListener('submit', function (e) {
         e.preventDefault();
         responseContainer.innerHTML = '';
@@ -30,9 +41,12 @@
         unsplashRequest.setRequestHeader('Authorization', 'Client-ID 265cbd43910e6142fdd0845465c9746e5d4295d3a0bed326edbca6585c3e06de');
         unsplashRequest.onload = addImage;
         unsplashRequest.onerror = imageError;
-        function imageError() {
-            console.log('Search request error. Check network connection.');
-        }
         unsplashRequest.send();
+
+        const articleRequest = new XMLHttpRequest();
+        articleRequest.open('GET', `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${searchedForText}&api-key=9448b976337b4022b9d1a0ac2ec11bbb`);
+        articleRequest.onload = addArticles;
+        articleRequest.onerror = articleError;
+        articleRequest.send();
     });
 })();
