@@ -50,10 +50,12 @@
             headers: {
                 Authorization: 'Client-ID 265cbd43910e6142fdd0845465c9746e5d4295d3a0bed326edbca6585c3e06de'
             }
-        }).done(addImage);
+        }).done(addImage)
+            .fail(() => console.log('Image request error. Check network connection.'));
 
         $.ajax({
             url: `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${searchedForText}&api-key=9448b976337b4022b9d1a0ac2ec11bbb`,
-        }).done(addArticles);
+        }).done(addArticles)
+            .fail(() => console.log('Article search error'));
     });
 })();
