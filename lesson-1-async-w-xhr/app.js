@@ -25,7 +25,25 @@
     }
 
 
-    function addArticles() {}
+    function addArticles() {
+        const data = JSON.parse(this.responseText);
+        let htmlContent;
+        if (data.response && data.response.docs && data.response.docs[0]) {
+            htmlContent = document.createElement('ul');
+            for (const d of data.response.docs) {
+                const article = document.createElement('li');
+                article.innerHTML = `<li class ="article">
+                <h2><a href="${d.web_url}">${d.headline.main}</a></h2>
+                <p>${d.snippet}</p>
+                </li>`;
+                htmlContent.appendChild(article);
+            }
+        } else {
+            htmlContent = document.createElement('p');
+            htmlContent.innerText = '<div classs="error-no-article">Sorry, no articles found!</div>';
+        }
+        responseContainer.appendChild(htmlContent);
+    }
 
     function articleError() {
         console.log('Article search error');
