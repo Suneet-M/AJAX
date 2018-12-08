@@ -21,6 +21,25 @@
         responseContainer.innerHTML = htmlContent;
     }
 
+    function addArticles(data) {
+        let htmlContent;
+        if (data.response && data.response.docs && data.response.docs[0]) {
+            htmlContent = document.createElement('ul');
+            for (const d of data.response.docs) {
+                const article = document.createElement('li');
+                article.innerHTML = `<li class ="article">
+                <h2><a href="${d.web_url}">${d.headline.main}</a></h2>
+                <p>${d.snippet}</p>
+                </li>`;
+                htmlContent.appendChild(article);
+            }
+        } else {
+            htmlContent = document.createElement('p');
+            htmlContent.innerText = '<div classs="error-no-article">Sorry, no articles found!</div>';
+        }
+        responseContainer.appendChild(htmlContent);
+    }
+
     form.addEventListener('submit', function (e) {
         e.preventDefault();
         responseContainer.innerHTML = '';
@@ -33,5 +52,8 @@
             }
         }).done(addImage);
 
+        $.ajax({
+            url: `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${searchedForText}&api-key=9448b976337b4022b9d1a0ac2ec11bbb`,
+        }).done(addArticles);
     });
 })();
